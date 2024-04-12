@@ -1,0 +1,80 @@
+import java.util.ArrayList;
+public class TaskManager {
+    private ArrayList<Task> tasks = new ArrayList<Task>();
+    private int nextId = 0;
+    public void add(int id, String description, int dueDate, int priority){
+        tasks.add(new Task(id, description, dueDate, priority));
+    }
+    public void edit(int id, String description, int dueDate, int priority){
+        for(Task i : tasks){
+            if(i.getId() == id && !i.isCompleted()){
+                i.setDescription(description);
+                i.setDueDate(dueDate);
+                i.setPriority(priority);
+                return;
+            }
+        }
+        System.out.println("No task with such ID found. ");
+    }
+    public boolean existsUncompleted(int id){
+        for(Task i : tasks){
+            if(i.getId() == id && !i.isCompleted()){
+                return true;
+            }
+        }
+        return false;
+    }
+    public void complete(int id){
+        for(Task i : tasks){
+            if(i.getId() == id){
+                i.complete();
+                System.out.println("Task successfully marked as complete. ");
+                return;
+            }
+        }
+        System.out.println("Cannot find a task with such id");
+    }
+    public void view(int id){
+        for(Task i : tasks){
+            if(i.getId() == id){
+                i.display();
+                break;
+            }
+        }
+    }
+    public void viewAll(){
+        for(Task i : tasks){
+            i.display();
+            System.out.println();
+        }
+    }
+    public void dueToday(){
+        for(Task i : tasks){
+            if(i.getDueDate() == 0){
+                i.display();
+            }
+        }
+    }
+    public int numTasks(){
+        int n = 0;
+        for(Task i : tasks){
+            if(!i.isCompleted()){
+                n++;
+            }
+        }
+        return n;
+    }
+    public int numDueToday(){
+        int n = 0;
+        for(Task i : tasks){
+            if(!i.isCompleted() && i.getDueDate() == 0){
+                n++;
+            }
+        }
+        return n;
+    }
+    public int nextId(){
+        nextId++; //this ensures that I don't have two separate tasks with the same ID
+        return nextId;
+    }
+}
