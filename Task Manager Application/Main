@@ -1,0 +1,116 @@
+import java.util.Scanner;
+public class Main {
+    public static void main(String[] args) {
+        Scanner in = new Scanner(System.in);
+        TaskManager manager = new TaskManager();
+        System.out.println("Welcome to task manager!");
+        boolean finish = false;
+        while(!finish){
+            System.out.println("Enter what you wish to do: ");
+            System.out.println("1. Add a new task");
+            System.out.println("2. Mark task as completed");
+            System.out.println("3. View all tasks");
+            System.out.println("4. View tasks due today. ");
+            System.out.println("5. Edit task by ID. ");
+            System.out.println("6. Exit. ");
+            int option = 0;
+            try{
+                option = Integer.parseInt(in.nextLine());
+            }catch (NumberFormatException e){
+                e.printStackTrace();
+            }
+            //I have to do this since nextInt does not read the "enter" symbol, which then messes up the next nextLine in the code
+            switch (option){
+                case 1:
+                    System.out.println("Enter task description: ");
+                    String description = in.nextLine();
+                    System.out.println("Enter task due date (in number of days): ");
+                    int due = 0;
+                    try{ //same reason as mentioned before
+                        due = Integer.parseInt(in.nextLine());
+                    }catch (NumberFormatException e){
+                        e.printStackTrace();
+                    }
+                    System.out.println("Enter task priority level: ");
+                    int priority = 0;
+                    try{
+                        priority = Integer.parseInt(in.nextLine());
+                    }catch (NumberFormatException e){
+                        e.printStackTrace();
+                    }
+                    manager.add(manager.nextId(), description, due, priority);
+                    System.out.println("Task successfully added. ");
+                    break;
+                case 2:
+                    if(manager.numTasks() < 0){
+                        System.out.println("There are no uncompleted tasks. ");
+                        break;
+                    }
+                    System.out.println("Enter the id of the task which you want to mark as complete: ");
+                    int id = 0;
+                    try{
+                        id = Integer.parseInt(in.nextLine());
+                    }catch (NumberFormatException e){
+                        e.printStackTrace();
+                    }
+                    manager.complete(id);
+                    break;
+                case 3:
+                    if(manager.numTasks() < 0){
+                        System.out.println("There are no uncompleted tasks. ");
+                        break;
+                    }
+                    manager.viewAll();
+                    break;
+                case 4:
+                    if(manager.numDueToday() < 0){
+                        System.out.println("There are no uncompleted tasks due today. ");
+                        break;
+                    }
+                    manager.dueToday();
+                    break;
+                case 5:
+                    if(manager.numTasks() < 0){
+                        System.out.println("There are no uncompleted tasks. ");
+                        break;
+                    }
+                    System.out.println("Enter the id of the task: ");
+                    int newId = 0;
+                    try{
+                        newId = Integer.parseInt(in.nextLine());
+                    }catch (NumberFormatException e){
+                        e.printStackTrace();
+                    }
+                    if (!manager.existsUncompleted(newId)) {
+                        System.out.println("Invalid ID. ");
+                        break;
+                    }
+                    System.out.println("Enter new task description: ");
+                    String newDescription = in.nextLine();
+                    System.out.println("Enter new task due date (in number of days): ");
+                    int newDue = 0;
+                    try{
+                        newDue = Integer.parseInt(in.nextLine());
+                    }catch (NumberFormatException e){
+                        e.printStackTrace();
+                    }
+                    System.out.println("Enter new task priority level: ");
+                    int newPriority = 0;
+                    try{
+                        newPriority = Integer.parseInt(in.nextLine());
+                    }catch (NumberFormatException e){
+                        e.printStackTrace();
+                    }
+                    manager.edit(newId, newDescription, newDue, newPriority);
+                    System.out.println("Task successfully added. ");
+                    break;
+                case 6:
+                    finish = true;
+                    break;
+                default:
+                    System.out.println("Invalid input. ");
+                    break;
+            }
+        }
+    }
+}
