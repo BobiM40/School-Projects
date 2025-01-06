@@ -21,6 +21,25 @@ public class register extends JFrame{
         Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(emailStr);
         return matcher.matches();
     }
+    public static boolean stringHas(String input, String hasWhat){
+        if(hasWhat.equals("capital")){
+            for(int i = 0; i < input.length(); i++){
+                if(input.charAt(i) >= 'A' && input.charAt(i) <= 'Z') {
+                    return true;
+                }
+            }
+            return false;
+        }
+        if(hasWhat.equals("number")){
+            for(int i = 0; i < input.length(); i++){
+                if(input.charAt(i) >= '0' && input.charAt(i) <= '9'){
+                    return true;
+                }
+            }
+            return false;
+        }
+        return false;
+    }
     public register() {
         setSize(500,500);
         setContentPane(panel);
@@ -59,12 +78,18 @@ public class register extends JFrame{
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                if(passField.getText().equals("password")){
-                    feedback.setForeground(Color.green);
-                    feedback.setText("Login successful");
-                }else{
+                if(passField.getText().length() <= 8){
                     feedback.setForeground(Color.red);
-                    feedback.setText("incorrect password");
+                    feedback.setText("password has to be more than 8 symbols");
+                }else if(!stringHas(passField.getText(), "capital")){
+                    feedback.setForeground(Color.red);
+                    feedback.setText("password has to include at least one capital letter");
+                }else if(!stringHas(passField.getText(), "number")){
+                    feedback.setForeground(Color.red);
+                    feedback.setText("password has to include at least one number");
+                }else{
+                    feedback.setForeground(Color.green);
+                    feedback.setText("Registration successful");
                 }
             }
         });
