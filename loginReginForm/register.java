@@ -14,6 +14,7 @@ public class register extends JFrame{
     private JLabel pass;
     private JLabel feedback;
     private JPanel panel;
+    private boolean isValidUser = false, isValidEmail = false;
     public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
             Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
 
@@ -52,8 +53,10 @@ public class register extends JFrame{
                 if(userField.getText().length() <= 5){
                     feedback.setForeground(Color.red);
                     feedback.setText("username has to be more than 5 symbols");
+                    isValidUser = false;
                 }else{
                     feedback.setText(" ");
+                    isValidUser = true;
                 }
             }
         });
@@ -64,8 +67,10 @@ public class register extends JFrame{
                 if(!validate(emailField.getText())){
                     feedback.setForeground(Color.red);
                     feedback.setText("invalid email address");
+                    isValidEmail = false;
                 }else{
                     feedback.setText(" ");
+                    isValidEmail = true;
                 }
             }
         });
@@ -87,9 +92,15 @@ public class register extends JFrame{
                 }else if(!stringHas(passField.getText(), "number")){
                     feedback.setForeground(Color.red);
                     feedback.setText("password has to include at least one number");
-                }else{
+                }else if(isValidEmail && isValidUser){
                     feedback.setForeground(Color.green);
                     feedback.setText("Registration successful");
+                }else if(!isValidUser){
+                    feedback.setForeground(Color.red);
+                    feedback.setText("username has to be more than 5 symbols");
+                }else{
+                    feedback.setForeground(Color.red);
+                    feedback.setText("invalid email address");
                 }
             }
         });
